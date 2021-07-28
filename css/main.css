@@ -58,3 +58,8 @@ h1 {
 .tab:hover, .button:hover{
     background-color: rgb(103, 207, 255);
 }
+
+#svgArea {
+    height: 100%;
+    width: 100%;
+}
