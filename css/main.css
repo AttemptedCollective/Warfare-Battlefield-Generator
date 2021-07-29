@@ -1,0 +1,65 @@
+.container {
+    display: flex;
+    position: relative;
+    height: 30rem;
+    padding: 0px;
+}
+
+* {
+    font-family: 'Raleway', sans-serif;
+}
+
+body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+h1 {
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: black;
+}
+
+.container .tabs {
+    position: relative;
+}
+
+.container .tables{
+    width: 100%;
+}
+
+.tabs {
+    display: grid;
+    height:inherit;
+    width: 10rem;
+    padding: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    background-color: white;
+}
+
+.tabulator-tableHolder {
+    background-color: white;
+}
+
+.tab, .button, .gap {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 10rem;
+    border-style: none;
+    background-color: white;
+}
+
+.active {
+    background-color: rgb(62, 176, 230);
+}
+
+.tab:hover, .button:hover{
+    background-color: rgb(103, 207, 255);
+}
+
+#svgArea {
+    height: 100%;
+    width: 100%;
+}
