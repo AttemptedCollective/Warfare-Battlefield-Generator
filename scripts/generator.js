@@ -57,10 +57,10 @@ function GetTableSchema(defaultData) {
 }
 
 let enemyBattlefieldData = [
-  {label:"Vanguard", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Rear", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
   {label:"Center", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Rear", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Vanguard", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
 ];
 
 let midgroundBattlefieldData = [
@@ -72,10 +72,10 @@ let midgroundBattlefieldData = [
 ]
 
 let allyBattlefieldData = [
-  {label:"Center", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Rear", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
   {label:"Vanguard", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Rear", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
+  {label:"Center", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
 ];
 
 // Table Functions
@@ -136,11 +136,11 @@ function openEditor(editorName) {
 
 // Battlefield Generation
 function generateBattlefield() {
-  let enemyData = enemyTable.getData();  
+  let enemyData = enemyTable.getData();
   let midgroundData = midgroundTable.getData();
   let allyData = allyTable.getData();
 
-  enemyColours = ColorTranslator.getTints(enemyBaseColour, enemyData.length);  
+  enemyColours = ColorTranslator.getTints(enemyBaseColour, enemyData.length);
   allyColours = ColorTranslator.getTints(allyBaseColour, allyData.length).reverse();
   midgroundColours = ColorTranslator.getBlendRGB(enemyColours[enemyColours.length - 1], allyColours[0], midgroundData.length + 2);  
   midgroundColours.shift();
@@ -149,7 +149,7 @@ function generateBattlefield() {
   let allColours = enemyColours.concat(midgroundColours).concat(allyColours);
 
   let totalRows = enemyData.length + midgroundData.length + allyData.length;
-  let height = totalRows * (2 * offset);
+  let height = (totalRows * offset);
   let width = 20 * offset;
 
   let svgArea = document.getElementById('svgArea');
@@ -174,13 +174,6 @@ function generateBattlefield() {
     labelSquare.setAttributeNS(null, 'fill', labelColour);
     svgArea.appendChild(labelSquare);
 
-    let labelText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-    labelText.setAttributeNS(null, 'x', offset + offset*0.6);
-    labelText.setAttributeNS(null, 'y', offset + (row * offset) + offset*0.6);
-    labelText.setAttributeNS(null, 'text-anchor', 'right');
-    labelText.innerHTML = "Test";
-    svgArea.appendChild(labelText);
-    
     // Draw Each Column
     for (let column = 1; column < 6; column++) {
       var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -205,6 +198,37 @@ function generateBattlefield() {
     border.setAttributeNS(null, 'stroke-width', 1);
     svgArea.appendChild(border); 
   }
+
+  let currentRow = 0;
+  enemyData.forEach(data => {
+    let labelText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+    labelText.setAttributeNS(null, 'x', offset + offset*0.2);
+    labelText.setAttributeNS(null, 'y', offset + (currentRow * offset) + offset*0.6);
+    labelText.setAttributeNS(null, 'text-anchor', 'right');
+    labelText.innerHTML = data.label;
+    svgArea.appendChild(labelText);
+    currentRow++;
+  });
+
+  midgroundData.forEach(data => {
+    let labelText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+    labelText.setAttributeNS(null, 'x', offset + offset*0.2);
+    labelText.setAttributeNS(null, 'y', offset + (currentRow * offset) + offset*0.6);
+    labelText.setAttributeNS(null, 'text-anchor', 'right');
+    labelText.innerHTML = data.label;
+    svgArea.appendChild(labelText);
+    currentRow++;
+  });
+
+  allyData.forEach(data => {
+    let labelText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+    labelText.setAttributeNS(null, 'x', offset + offset*0.2);
+    labelText.setAttributeNS(null, 'y', offset + (currentRow * offset) + offset*0.6);
+    labelText.setAttributeNS(null, 'text-anchor', 'right');
+    labelText.innerHTML = data.label;
+    svgArea.appendChild(labelText);
+    currentRow++;
+  });
 
   // Draw Border Around Entire Battlefield
   let border = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
