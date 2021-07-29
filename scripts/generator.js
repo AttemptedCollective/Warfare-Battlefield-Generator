@@ -171,9 +171,9 @@ function generateBattlefield() {
   let midgroundData = midgroundTable.getData();
   let allyData = allyTable.getData();
 
-  enemyColours = ColorTranslator.getTints(enemyBaseColour, enemyData.length);
+  enemyColours = enemyData.length == 1 ? [enemyBaseColour] : ColorTranslator.getTints(enemyBaseColour, enemyData.length);
   allyColours = ColorTranslator.getTints(allyBaseColour, allyData.length).reverse();
-  midgroundColours = ColorTranslator.getBlendRGB(enemyColours[enemyColours.length - 1], allyColours[0], midgroundData.length + 2);  
+  midgroundColours = allyData.length == 1 ? [allyBaseColour] : ColorTranslator.getBlendRGB(enemyColours[enemyColours.length - 1], allyColours[0], midgroundData.length + 2);  
   midgroundColours.shift();
   midgroundColours.pop();
 
@@ -199,79 +199,36 @@ function generateBattlefield() {
 
     // Draw Each Column
     for (let column = 1; column < 6; column++) {
-      drawRectWithBorder(
-        (offset * 2) + offset + ((3 * offset) * (column - 1)),
-        offset + (row * offset),
-        offset,
-        3 * offset,
-        allColours[row],
-        borderColour,
-        0.25,
-        svgArea);
+      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * (column - 1)), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
     }
 
     // Draw A Border Around Each Row
-    drawRectWithBorder(
-      offset,
-      offset + (row * offset),
-      offset,
-      17 * offset,
-      'none',
-      borderColour,
-      1,
-      svgArea);
+    drawRectWithBorder(offset, offset + (row * offset), offset, 17 * offset, 'none', borderColour, 1, svgArea);
   }
 
+  // Draw The Labels For Each Row
   let currentRow = 0;
   enemyData.forEach(data => {
-    drawText(
-      offset + offset * 0.2,
-      offset + (currentRow * offset) + offset * 0.6,
-      data.label);
+    drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   midgroundData.forEach(data => {
-    drawText(
-      offset + offset * 0.2,
-      offset + (currentRow * offset) + offset * 0.6,
-      data.label);
+    drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   allyData.forEach(data => {
-    drawText(
-      offset + offset * 0.2,
-      offset + (currentRow * offset) + offset * 0.6,
-      data.label);
+    drawText( offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   // Draw Label For Air and Calvary
-    drawText(
-      (17 * offset) + (2.5 * offset) * 0.6,
-      offset + offset * 0.6,
-      "Air & Calvary");
+    drawText((17 * offset) + (2.5 * offset) * 0.6, offset + offset * 0.6, "Air & Calvary");
 
   // Draw Border Around Air and Calvary
-      drawRectWithBorder(
-        offset + (17 * offset),
-        offset,
-        offset * totalRows,
-        3 * offset,
-        'none',
-        borderColour,
-        1,
-        svgArea);
-        
+      drawRectWithBorder(offset + (17 * offset), offset, offset * totalRows, 3 * offset, 'none', borderColour, 1, svgArea);
+
   // Draw Border Around Entire Battlefield
-  drawRectWithBorder(
-    offset,
-    offset,
-    offset * totalRows,
-    offset * 2,
-    'none',
-    borderColour,
-    1,
-    svgArea);
+  drawRectWithBorder(offset, offset, offset * totalRows, offset * 2, 'none', borderColour, 1, svgArea);
 }
