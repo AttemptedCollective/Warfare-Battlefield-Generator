@@ -18,6 +18,9 @@ let enemyTable;
 let midgroundTable;
 let allyTable;
 
+let labelValues = ["", "Rear", "Reserve", "Center", "Vanguard"];
+let columnValues = ["Empty", "Filled", "Structure"];
+
 // Default Values
 function GetTableSchema(defaultData) { 
   return {
@@ -27,28 +30,28 @@ function GetTableSchema(defaultData) {
     height: "30rem",
     columns:[
       {title:"Label", field:"label", headerSort:false, editor:"select", editorParams:{
-        values:["", "Rear", "Reserve", "Center", "Vanguard"],
+        values:labelValues,
         defaultValue:""}
       },
       {title:"Column 1", field:"column1", headerSort:false, editor:"select", editorParams:{
-        values: ["Empty","Filled"],
-        defaultValue:"Filled"}
+        values: columnValues,
+        defaultValue:columnValues[1]}
       },
       {title:"Column 2", field:"column2", headerSort:false, editor:"select", editorParams:{
-        values: ["Empty","Filled"],
-        defaultValue:"Filled"}
+        values: columnValues,
+        defaultValue:columnValues[1]}
       },
       {title:"Column 3", field:"column3", headerSort:false, editor:"select", editorParams:{
-        values: ["Empty","Filled"],
-        defaultValue:"Filled"}
+        values: columnValues,
+        defaultValue:columnValues[1]}
       },
       {title:"Column 4", field:"column4", headerSort:false, editor:"select", editorParams:{
-        values: ["Empty","Filled"],
-        defaultValue:"Filled"}
+        values: columnValues,
+        defaultValue:columnValues[1]}
       },
       {title:"Column 5", field:"column5", headerSort:false, editor:"select", editorParams:{
-        values: ["Empty","Filled"],
-        defaultValue:"Filled"}
+        values: columnValues,
+        defaultValue:columnValues[1]}
       },
       {formatter:"buttonCross", width:40, align:"center", cellClick:function(e, cell){
         cell.getRow().delete();
@@ -179,10 +182,18 @@ function drawRow(data, row) {
   // Draw Each Column
   let columns = getColumns(data);
   for (let column = 0; column < 5; column++) {
-    if (columns[column] == "Empty") {
-      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'white', borderColour, 0.25, svgArea);
-    } else {
-      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
+    switch (columns[column]) {
+      case "Empty":
+        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'white', borderColour, 0.25, svgArea);
+        break;
+    
+      case "Structure":
+        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'grey', borderColour, 0.25, svgArea);
+        break;
+
+      default:
+        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
+        break;
     }
   }
 
@@ -242,10 +253,10 @@ function generateBattlefield() {
   });
 
   // Draw Label For Air and Calvary
-    drawText((17 * offset) + (2.5 * offset) * 0.6, offset + offset * 0.6, "Air & Calvary");
+  drawText((17 * offset) + (2.5 * offset) * 0.6, offset + offset * 0.6, "Air & Calvary");
 
   // Draw Border Around Air and Calvary
-      drawRectWithBorder(offset + (17 * offset), offset, offset * totalRows, 3 * offset, 'none', borderColour, 1, svgArea);
+  drawRectWithBorder(offset + (17 * offset), offset, offset * totalRows, 3 * offset, 'none', borderColour, 1, svgArea);
 
   // Draw Border Around Entire Battlefield
   drawRectWithBorder(offset, offset, offset * totalRows, offset * 2, 'none', borderColour, 1, svgArea);
