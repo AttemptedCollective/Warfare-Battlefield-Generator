@@ -4,6 +4,7 @@
 
 <body onload="SetupTables()">
     <h1>Warefare Battlefield Generator</h1>
+
     
     <p>An area for UI and Interface for controlling generation</p>
     
@@ -16,7 +17,8 @@
             <input class="button" type="button" value="Reset Battlefield" onclick="resetBattlefield()")>
             <input class="button" type="button" value="Add Row" onclick="addNewRow()")>
             <div class="gap"></div>
-            <input class="button" type="button" value="Randomise Battlefield" onclick="")>
+            <input class="button" type="button" value="Settings" onclick="")>
+            <input class="button" type="button" value="Randomise Battlefield" onclick="switchWindow()")>
             <input class="button" type="button" value="Generate Battlefield" onclick="generateBattlefield()")>
         </section>
     
@@ -32,6 +34,9 @@
             <section id="ally-battlefield" class="tableContainer">
                 <div id="ally-battlefield-table"></div>
             </section>
+        </section>
+
+        <section class="settings">
         </section>
     </section>
 
