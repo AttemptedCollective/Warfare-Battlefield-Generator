@@ -236,19 +236,16 @@ function generateBattlefield() {
   let currentRow = 0;
   enemyData.forEach(data => {
     drawRow(data, currentRow);
-    // drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   midgroundData.forEach(data => {
     drawRow(data, currentRow);
-    // drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   allyData.forEach(data => {
     drawRow(data, currentRow);
-    // drawText( offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
