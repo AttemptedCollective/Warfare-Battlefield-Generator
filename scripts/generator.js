@@ -12,6 +12,7 @@ let fontColour = "rgb(28, 2, 33)";
 let enemyColours;
 let midgroundColours;
 let allyColours;
+let allColours;
 
 let enemyTable;
 let midgroundTable;
@@ -101,6 +102,11 @@ function resetBattlefield(){
 }
 
 // CSS Functions
+function switchWindow() {
+  document.getElementsByClassName("tables")[0].classList.toggle("hideWindow");
+  document.getElementsByClassName("settings")[0].classList.toggle("hideWindow");
+}
+
 function openEditor(editorName) {
   let elements = document.getElementsByClassName("tableContainer");
 
@@ -108,7 +114,7 @@ function openEditor(editorName) {
     elements[index].style.display = "none";
   }
 
-  document.getElementById(editorName).style.display = "block";
+  docment.getElementById(editorName).style.display = "block";
   document.getElementById("enemy-button").classList.remove("active");
   document.getElementById("midground-button").classList.remove("active");
   document.getElementById("ally-button").classList.remove("active");
@@ -165,6 +171,29 @@ function drawRectWithBorder(x, y, height, width, colour, stroke, strokeWidth, sv
   svg.appendChild(rect);
 }
 
+function drawRow(data, row) {
+  // Draw Each Label
+  drawRect(offset, offset * (row + 1), offset, offset * 2, labelColour, svgArea);
+  drawText(offset + offset * 0.2, offset + (row * offset) + offset * 0.6, data.label);
+
+  // Draw Each Column
+  let columns = getColumns(data);
+  for (let column = 0; column < 5; column++) {
+    if (columns[column] == "Empty") {
+      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'white', borderColour, 0.25, svgArea);
+    } else {
+      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
+    }
+  }
+
+  // Draw A Border Around Each Row
+  drawRectWithBorder(offset, offset + (row * offset), offset, 17 * offset, 'none', borderColour, 1, svgArea);
+}
+
+function getColumns(data) {
+   return [data.column1, data.column2, data.column3, data.column4, data.column5];
+}
+
 // Battlefield Generation
 function generateBattlefield() {
   let enemyData = enemyTable.getData();
@@ -177,7 +206,7 @@ function generateBattlefield() {
   midgroundColours.shift();
   midgroundColours.pop();
 
-  let allColours = enemyColours.concat(midgroundColours).concat(allyColours);
+  allColours = enemyColours.concat(midgroundColours).concat(allyColours);
 
   let totalRows = enemyData.length + midgroundData.length + allyData.length;
   let height = (totalRows * offset);
@@ -191,35 +220,24 @@ function generateBattlefield() {
 
   // Draw Air and Calvary
   drawRect(offset + (17 * offset), offset, offset * totalRows, 3 * offset, cavalryColour, svgArea);
-  
-  // Draw Each Row
-  for (let row = 0; row < totalRows; row++) {
-    // Draw Each Label
-    drawRect(offset, offset * (row + 1), offset, offset * 2, labelColour, svgArea);
-
-    // Draw Each Column
-    for (let column = 1; column < 6; column++) {
-      drawRectWithBorder((offset * 2) + offset + ((3 * offset) * (column - 1)), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
-    }
-
-    // Draw A Border Around Each Row
-    drawRectWithBorder(offset, offset + (row * offset), offset, 17 * offset, 'none', borderColour, 1, svgArea);
-  }
 
   // Draw The Labels For Each Row
   let currentRow = 0;
   enemyData.forEach(data => {
-    drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
+    drawRow(data, currentRow);
+    // drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   midgroundData.forEach(data => {
-    drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
+    drawRow(data, currentRow);
+    // drawText(offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
   allyData.forEach(data => {
-    drawText( offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
+    drawRow(data, currentRow);
+    // drawText( offset + offset * 0.2, offset + (currentRow * offset) + offset * 0.6, data.label);
     currentRow++;
   });
 
