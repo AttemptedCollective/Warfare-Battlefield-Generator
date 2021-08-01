@@ -3,7 +3,7 @@ let offset = 50;
 let currentTable = "enemy";
 
 let enemyBaseColour = "rgb(219, 58, 52)";
-let allyBaseColour = "rgb(8, 76, 97)";
+let allyBaseColour = "rgb(59, 177, 255)";
 let cavalryColour = "rgb(104, 139, 88)";
 let borderColour = "rgb(28, 2, 33)";
 let labelColour = "rgb(174, 197, 235)";
@@ -20,6 +20,15 @@ let allyTable;
 
 let labelValues = ["", "Rear", "Reserve", "Center", "Vanguard"];
 let columnValues = ["Empty", "Filled", "Structure"];
+
+let battlefieldTitle = "Battlefield";
+let canvas = document.querySelector('canvas');
+let context = canvas.getContext('2d');
+
+let width;
+let height;
+let svgArea;
+let png;
 
 // Default Values
 function GetTableSchema(defaultData) { 
@@ -117,7 +126,7 @@ function openEditor(editorName) {
     elements[index].style.display = "none";
   }
 
-  docment.getElementById(editorName).style.display = "block";
+  document.getElementById(editorName).style.display = "block";
   document.getElementById("enemy-button").classList.remove("active");
   document.getElementById("midground-button").classList.remove("active");
   document.getElementById("ally-button").classList.remove("active");
@@ -148,6 +157,7 @@ function drawText(x, y, label){
   text.setAttributeNS(null, 'x', x);
   text.setAttributeNS(null, 'y', y);
   text.setAttributeNS(null, 'text-anchor', 'right');
+  text.setAttributeNS(null, 'font-family', 'Raleway, sans-serif');
   text.innerHTML = label;
   svgArea.appendChild(text);
 }
@@ -212,18 +222,18 @@ function generateBattlefield() {
   let allyData = allyTable.getData();
 
   enemyColours = enemyData.length == 1 ? [enemyBaseColour] : ColorTranslator.getTints(enemyBaseColour, enemyData.length);
-  allyColours = ColorTranslator.getTints(allyBaseColour, allyData.length).reverse();
-  midgroundColours = allyData.length == 1 ? [allyBaseColour] : ColorTranslator.getBlendRGB(enemyColours[enemyColours.length - 1], allyColours[0], midgroundData.length + 2);  
+  allyColours = allyData.length == 1 ? [allyBaseColour] : ColorTranslator.getTints(allyBaseColour, allyData.length).reverse();
+  midgroundColours = ColorTranslator.getBlendRGB(enemyColours[enemyColours.length - 1], allyColours[0], midgroundData.length + 2);  
   midgroundColours.shift();
   midgroundColours.pop();
 
   allColours = enemyColours.concat(midgroundColours).concat(allyColours);
 
   let totalRows = enemyData.length + midgroundData.length + allyData.length;
-  let height = (totalRows * offset);
-  let width = 20 * offset;
+  height = (totalRows * offset);
+  width = 20 * offset;
 
-  let svgArea = document.getElementById('svgArea');
+  svgArea = document.getElementById('svgArea');
   svgArea.innerHTML = '';
 
   // Draw Background  
@@ -257,4 +267,40 @@ function generateBattlefield() {
 
   // Draw Border Around Entire Battlefield
   drawRectWithBorder(offset, offset, offset * totalRows, offset * 2, 'none', borderColour, 1, svgArea);
+}
+
+function saveBattlefield() {
+  
+  generateBattlefield();
+  let svgBox = svgArea.getBBox(); 
+
+  
+  canvas.width = svgBox.width;
+  canvas.height = svgBox.height;
+
+  image = drawInlineSVG(svgArea);
+  
+  // canvas.clearRect(0, 0, canvas.width, canvas.height);
+  // canvas.width = 0;
+  // canvas.height = 0;
+}
+
+function drawInlineSVG(svgElement) {
+  var svgURL = new XMLSerializer().serializeToString(svgElement);
+  var image = new Image();
+  image.onload = function() {
+    let body = document.querySelector('body');
+    context.drawImage(this, 0, 0);
+    
+    png = canvas.toDataURL("image/png", 1);
+
+    var link = document.createElement('a');
+    link.style.opacity = "0";
+    link.download = battlefieldTitle;
+    body.append(link);
+    link.href = png;
+    link.click();
+    link.remove();
+  }
+  image.src = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgURL);
 }

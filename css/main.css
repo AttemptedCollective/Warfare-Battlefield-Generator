@@ -20,6 +20,10 @@ h1 {
     border-color: black;
 }
 
+canvas {
+    display: none;
+}
+
 .container .tabs {
     position: relative;
 }
