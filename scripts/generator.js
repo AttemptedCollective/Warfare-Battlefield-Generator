@@ -325,6 +325,11 @@ document.getElementById('label-colour').addEventListener("change", changeColour,
 document.getElementById('border-colour').value = new ColorTranslator(borderColour).HEX;
 document.getElementById('border-colour').addEventListener("change", changeColour, false);
 
+document.getElementById('pixels-square').value = pixelsPerSquare;
+document.getElementById('pixels-square').addEventListener("change", e => {
+  pixelsPerSquare = parseInt(e.currentTarget.value);
+}, false);
+
 function changeColour(e) {
   switch (e.currentTarget.id) {
     case "calvary-colour":
