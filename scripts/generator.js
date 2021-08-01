@@ -1,5 +1,5 @@
 // Setup
-let offset = 50;
+let pixelsPerSquare = 70;
 let currentTable = "enemy";
 
 let enemyBaseColour = "rgb(219, 58, 52)";
@@ -186,29 +186,29 @@ function drawRectWithBorder(x, y, height, width, colour, stroke, strokeWidth, sv
 
 function drawRow(data, row) {
   // Draw Each Label
-  drawRect(offset, offset * (row + 1), offset, offset * 2, labelColour, svgArea);
-  drawText(offset + offset * 0.2, offset + (row * offset) + offset * 0.6, data.label);
+  drawRect(pixelsPerSquare, pixelsPerSquare * (row + 1), pixelsPerSquare, pixelsPerSquare * 2, labelColour, svgArea);
+  drawText(pixelsPerSquare + pixelsPerSquare * 0.2, pixelsPerSquare + (row * pixelsPerSquare) + pixelsPerSquare * 0.6, data.label);
 
   // Draw Each Column
   let columns = getColumns(data);
   for (let column = 0; column < 5; column++) {
     switch (columns[column]) {
       case "Empty":
-        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'white', borderColour, 0.25, svgArea);
+        drawRectWithBorder((pixelsPerSquare * 2) + pixelsPerSquare + ((3 * pixelsPerSquare) * column), pixelsPerSquare + (row * pixelsPerSquare), pixelsPerSquare, 3 * pixelsPerSquare, 'white', borderColour, 0.25, svgArea);
         break;
     
       case "Structure":
-        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, 'grey', borderColour, 0.25, svgArea);
+        drawRectWithBorder((pixelsPerSquare * 2) + pixelsPerSquare + ((3 * pixelsPerSquare) * column), pixelsPerSquare + (row * pixelsPerSquare), pixelsPerSquare, 3 * pixelsPerSquare, 'grey', borderColour, 0.25, svgArea);
         break;
 
       default:
-        drawRectWithBorder((offset * 2) + offset + ((3 * offset) * column), offset + (row * offset), offset, 3 * offset, allColours[row], borderColour, 0.25, svgArea);
+        drawRectWithBorder((pixelsPerSquare * 2) + pixelsPerSquare + ((3 * pixelsPerSquare) * column), pixelsPerSquare + (row * pixelsPerSquare), pixelsPerSquare, 3 * pixelsPerSquare, allColours[row], borderColour, 0.25, svgArea);
         break;
     }
   }
 
   // Draw A Border Around Each Row
-  drawRectWithBorder(offset, offset + (row * offset), offset, 17 * offset, 'none', borderColour, 1, svgArea);
+  drawRectWithBorder(pixelsPerSquare, pixelsPerSquare + (row * pixelsPerSquare), pixelsPerSquare, 17 * pixelsPerSquare, 'none', borderColour, 1, svgArea);
 }
 
 function getColumns(data) {
@@ -230,17 +230,17 @@ function generateBattlefield() {
   allColours = enemyColours.concat(midgroundColours).concat(allyColours);
 
   let totalRows = enemyData.length + midgroundData.length + allyData.length;
-  height = (totalRows * offset);
-  width = 20 * offset;
+  height = (totalRows * pixelsPerSquare);
+  width = 20 * pixelsPerSquare;
 
   svgArea = document.getElementById('svgArea');
   svgArea.innerHTML = '';
 
   // Draw Background  
-  drawRect(0, 0, height + (offset * 2), width + (offset * 2), '#efefef', svgArea);
+  drawRect(0, 0, height + (pixelsPerSquare * 2), width + (pixelsPerSquare * 2), '#efefef', svgArea);
 
   // Draw Air and Calvary
-  drawRect(offset + (17 * offset), offset, offset * totalRows, 3 * offset, cavalryColour, svgArea);
+  drawRect(pixelsPerSquare + (17 * pixelsPerSquare), pixelsPerSquare, pixelsPerSquare * totalRows, 3 * pixelsPerSquare, cavalryColour, svgArea);
 
   // Draw The Labels For Each Row
   let currentRow = 0;
@@ -260,13 +260,13 @@ function generateBattlefield() {
   });
 
   // Draw Label For Air and Calvary
-  drawText((17 * offset) + (2.5 * offset) * 0.6, offset + offset * 0.6, "Air & Calvary");
+  drawText((17 * pixelsPerSquare) + (2.5 * pixelsPerSquare) * 0.6, pixelsPerSquare + pixelsPerSquare * 0.6, "Air & Calvary");
 
   // Draw Border Around Air and Calvary
-  drawRectWithBorder(offset + (17 * offset), offset, offset * totalRows, 3 * offset, 'none', borderColour, 1, svgArea);
+  drawRectWithBorder(pixelsPerSquare + (17 * pixelsPerSquare), pixelsPerSquare, pixelsPerSquare * totalRows, 3 * pixelsPerSquare, 'none', borderColour, 1, svgArea);
 
   // Draw Border Around Entire Battlefield
-  drawRectWithBorder(offset, offset, offset * totalRows, offset * 2, 'none', borderColour, 1, svgArea);
+  drawRectWithBorder(pixelsPerSquare, pixelsPerSquare, pixelsPerSquare * totalRows, pixelsPerSquare * 2, 'none', borderColour, 1, svgArea);
 }
 
 function saveBattlefield() {
