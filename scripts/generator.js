@@ -2,8 +2,8 @@
 let pixelsPerSquare = 70;
 let currentTable = "enemy";
 
-let enemyBaseColour = "rgb(219, 58, 52)";
-let allyBaseColour = "rgb(59, 177, 255)";
+let enemyBaseColour = "rgb(216, 10, 10)";
+let allyBaseColour = "rgb(0, 98, 184)";
 let cavalryColour = "rgb(104, 139, 88)";
 let borderColour = "rgb(28, 2, 33)";
 let labelColour = "rgb(174, 197, 235)";
@@ -77,11 +77,7 @@ let enemyBattlefieldData = [
 ];
 
 let midgroundBattlefieldData = [
-  {label:"Vanguard", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
   {label:"Center", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Reserve", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
-  {label:"Vanguard", column1:"Filled", column2:"Filled", column3:"Filled", column4:"Filled", column5:"Filled"},
 ]
 
 let allyBattlefieldData = [
@@ -100,6 +96,7 @@ function SetupTables() {
   document.getElementById("enemy-button").classList.add("active");
   document.getElementById("midground-battlefield").style.display = "none";
   document.getElementById("ally-battlefield").style.display = "none";
+  document.getElementById("settings").style.display = "none";
   currentTable = enemyTable;
 }
 
@@ -113,13 +110,7 @@ function resetBattlefield(){
   allyTable = new Tabulator("#ally-battlefield-table", GetTableSchema(allyBattlefieldData));
 }
 
-// CSS Functions
-function switchWindow() {
-  document.getElementsByClassName("tables")[0].classList.toggle("hideWindow");
-  document.getElementsByClassName("settings")[0].classList.toggle("hideWindow");
-}
-
-function openEditor(editorName) {
+function openTab(editorName) {
   let elements = document.getElementsByClassName("tableContainer");
 
   for (let index = 0; index < elements.length; index++) {
@@ -130,6 +121,7 @@ function openEditor(editorName) {
   document.getElementById("enemy-button").classList.remove("active");
   document.getElementById("midground-button").classList.remove("active");
   document.getElementById("ally-button").classList.remove("active");
+  document.getElementById("settings-button").classList.remove("active");
 
   switch (editorName) {
     case "enemy-battlefield":
@@ -145,6 +137,12 @@ function openEditor(editorName) {
     case "ally-battlefield":
       currentTable = allyTable;
       document.getElementById("ally-button").classList.add("active");
+      break;
+    
+    case "settings":
+      currentTable = allyTable;
+      document.getElementById(editorName).style.display = "grid";
+      document.getElementById("settings-button").classList.add("active");
       break;
   
     default:
@@ -265,6 +263,12 @@ function generateBattlefield() {
   // Draw Border Around Air and Calvary
   drawRectWithBorder(pixelsPerSquare + (17 * pixelsPerSquare), pixelsPerSquare, pixelsPerSquare * totalRows, 3 * pixelsPerSquare, 'none', borderColour, 1, svgArea);
 
+  // Draw Enemy Divide Line
+  drawRectWithBorder(pixelsPerSquare, (enemyData.length + 1) * pixelsPerSquare, 1, 17 * pixelsPerSquare, 'none', enemyBaseColour, 1, svgArea)
+
+  // Draw Ally Divide Line
+  drawRectWithBorder(pixelsPerSquare, (enemyData.length + midgroundData.length + 1) * pixelsPerSquare, 1, 17 * pixelsPerSquare, 'none', allyBaseColour, 1, svgArea)
+
   // Draw Border Around Entire Battlefield
   drawRectWithBorder(pixelsPerSquare, pixelsPerSquare, pixelsPerSquare * totalRows, pixelsPerSquare * 2, 'none', borderColour, 1, svgArea);
 }
@@ -303,4 +307,49 @@ function drawInlineSVG(svgElement) {
     link.remove();
   }
   image.src = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgURL);
+}
+
+// Other Functions
+document.getElementById('calvary-colour').value = new ColorTranslator(cavalryColour).HEX;
+document.getElementById('calvary-colour').addEventListener("change", changeColour, false);
+
+document.getElementById('enemy-colour').value = new ColorTranslator(enemyBaseColour).HEX;
+document.getElementById('enemy-colour').addEventListener("change", changeColour, false);
+
+document.getElementById('ally-colour').value = new ColorTranslator(allyBaseColour).HEX;
+document.getElementById('ally-colour').addEventListener("change", changeColour, false);
+
+document.getElementById('label-colour').value = new ColorTranslator(labelColour).HEX;
+document.getElementById('label-colour').addEventListener("change", changeColour, false);
+
+document.getElementById('border-colour').value = new ColorTranslator(borderColour).HEX;
+document.getElementById('border-colour').addEventListener("change", changeColour, false);
+
+function changeColour(e) {
+  switch (e.currentTarget.id) {
+    case "calvary-colour":
+      cavalryColour = new ColorTranslator(e.currentTarget.value).RGB;
+      break;
+
+    case "enemy-colour":
+      enemyBaseColour = new ColorTranslator(e.currentTarget.value).RGB;
+      break;
+
+    case "ally-colour":
+      allyBaseColour = new ColorTranslator(e.currentTarget.value).RGB;
+      break;
+
+    case "label-colour":
+      labelColour = new ColorTranslator(e.currentTarget.value).RGB;
+      break;    
+
+    case "border-colour":
+      borderColour = new ColorTranslator(e.currentTarget.value).RGB;
+      break;
+
+    default:
+      break;
+  }
+  
+  generateBattlefield();
 }

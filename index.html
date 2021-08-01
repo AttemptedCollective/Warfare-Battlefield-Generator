@@ -11,15 +11,15 @@
     
     <section class="container">
         <section class="tabs">
-            <input class="tab" id="enemy-button" type="button" value="Enemy" onclick="openEditor('enemy-battlefield')">
-            <input class="tab" id="midground-button" type="button" value="Midground" onclick="openEditor('midground-battlefield')">
-            <input class="tab" id="ally-button" type="button" value="Ally" onclick="openEditor('ally-battlefield')">
+            <input class="tab" id="enemy-button" type="button" value="Enemy" onclick="openTab('enemy-battlefield')">
+            <input class="tab" id="midground-button" type="button" value="Midground" onclick="openTab('midground-battlefield')">
+            <input class="tab" id="ally-button" type="button" value="Ally" onclick="openTab('ally-battlefield')">
             <div class="gap"></div>
             <input class="button" type="button" value="Add Row" onclick="addNewRow()")>
             <input class="button" type="button" value="Reset Battlefield" onclick="resetBattlefield()")>
-            <input class="button" type="button" value="Settings" onclick="")>
+            <input class="button" id='settings-button' type="button" value="Settings" onclick="openTab('settings')")>
             <div class="gap"></div>
-            <input class="button" type="button" value="Randomise Battlefield" onclick="switchWindow()")>
+            <input class="button" type="button" value="Randomise Battlefield" onclick="")>
             <input class="button" type="button" value="Preview Battlefield" onclick="generateBattlefield()")>
             <input class="button" type="button" value="Save Battlefield" onclick="saveBattlefield()")>
         </section>
@@ -36,15 +36,43 @@
             <section id="ally-battlefield" class="tableContainer">
                 <div id="ally-battlefield-table"></div>
             </section>
+
+            <section id="settings" class="tableContainer">
+                <section class="colours">
+                    <div>
+                        <input type="color" id="calvary-colour" name="calvary-colour" value="#ff0000">
+                        <label for="calvary-colour">Calvary Colour</label>
+                    </div>
+
+                    <div>
+                        <input type="color" id="enemy-colour" name="enemy-colour" value="#ff0000">
+                        <label for="enemy-colour">Enemy Colour</label>
+                    </div>
+
+                    <div>
+                        <input type="color" id="ally-colour" name="ally-colour" value="#ff0000">
+                        <label for="ally-colour">Ally Colour</label>
+                    </div>
+
+                    <div>
+                        <input type="color" id="label-colour" name="label-colour" value="#ff0000">
+                        <label for="label-colour">Label Colour</label>
+                    </div>
+
+                    <div>
+                        <input type="color" id="border-colour" name="border-colour" value="#ff0000">
+                        <label for="border-colour">Border Colour</label>
+                    </div>
+                </section>
+            </section>
         </section>
 
-        <section class="settings">
-        </section>
+        
     </section>
 
     <canvas></canvas>
-        <svg id="svgArea"></svg>
-    </img>
+    <svg id="svgArea"></svg>
+
     <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
